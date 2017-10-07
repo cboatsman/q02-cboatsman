@@ -23,26 +23,60 @@ TEST(PiezasTest, sanityCheck)
 	ASSERT_TRUE(true);
 }
 
-// Board constructor test
-// Result should be a 3x4 board of Blank pieces
-// REQUIRES: pieceAt() function
+/**
+ * @test      newBoardIsBlank
+ * @requires  pieceAt() function to be working at a basic level
+ * 
+ * @desc      Initially assumes board is blank. Traverses board and returns
+ *            each piece using the pieceAt() function. Tests that a new board
+ *            is constructed properly.
+ * 
+ *            PASS: ALL pieces returned equal Blank
+ *            FAIL: At least one piece returned is NOT equal to Blank
+ * 
+**/
+
 TEST(PiezasTest, newBoardIsBlank)
 {
-	Piezas game; // create a new game
-	Piece piece; // create a new piece
-	
+	Piezas game;
+	Piece piece;
 	bool boardIsBlank = true; // assume board is blank
 
 	for ( int row = 0; row < BOARD_ROWS; row++ ) {
 		for ( int col = 0; col < BOARD_COLS; col++ ) {
 			piece = game.pieceAt(row,col); // grab current piece
+			// setup EXPECT_EQ to see what piece may be if it's not blank
 			if ( piece != Blank ) {
-			 EXPECT_TRUE(piece == Blank);
+			 EXPECT_EQ(piece, Blank); // helpful message to see what piece is
 			 boardIsBlank = false;
-				break;
-			}	
+				break; // no point in continuing
+			}
 		}
 	}
+	ASSERT_TRUE(boardIsBlank); // test is success if new board is blank
+}
 
-	EXPECT_TRUE(boardIsBlank); // test is success if new board is blank
+/**
+ * @test      pieceAtOutOfBounds
+ * @requires  N/A
+ * 
+ * @desc      Tests pieceAt(int,int) by attempting to access a location that
+ *            is out of bounds from the game board which is defined to be
+ *            3x4 (3 rows, 4 columns) in size.
+ * 
+ *            PASS: Invalid is returned
+ *            FAIL: Invalid is NOT returned
+ * 
+**/
+
+TEST(PiezasTest, pieceAtOutOfBounds)
+{
+ Piezas game;
+ Piece piece = Blank; // set piece initially to Blank
+ try {
+  piece = game.pieceAt(5,5);
+ }
+ catch (const std::out_of_range& oor){
+  EXPECT_EQ(piece,Invalid);
+ }
 }
