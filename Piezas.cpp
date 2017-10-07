@@ -22,6 +22,16 @@
 **/
 Piezas::Piezas()
 {
+
+ // populate vectors with Blank pieces
+	for ( int row = 0; row < BOARD_ROWS; row++) {
+		for ( int col = 0; col < BOARD_COLS; col++ ) {
+		 Piece tmp = Blank;
+			(board[row])[col] = tmp;
+		}
+	}
+	
+	turn = X; // set first turn to piece X
 }
 
 /**
@@ -51,7 +61,11 @@ Piece Piezas::dropPiece(int column)
 **/
 Piece Piezas::pieceAt(int row, int column)
 {
-    return Blank;
+	Piece pieceFound;
+	
+	pieceFound = board.at(row).at(column);
+    
+	return pieceFound;
 }
 
 /**
