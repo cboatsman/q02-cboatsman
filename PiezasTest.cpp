@@ -84,29 +84,53 @@ TEST(PiezasTest, pieceAtOutOfBounds)
 }
 
 /**
+ * @test      dropPieceTest
+ * @requires  pieceAt() functionality
+ * 
+ * @desc      Tests dropPiece by dropping a single piece and testing it with
+ *            retrieving the new value from the board. If the piece dropped
+ *            equals the piece found, test is success.
+ * 
+ *            PASS: Piece dropped will allocate to the board correctly
+ *            FAIL: It won't return the correct piece or modify the board
+ * 
+**/
+
+TEST(PiezasTest, dropPieceTest)
+{
+ Piezas game;
+ Piece pieceDropped, pieceFound;
+ pieceDropped = game.dropPiece(0);
+ pieceFound = game.pieceAt(0,0); // its the first drop so it should be @ 0,0
+ EXPECT_EQ(pieceDropped,X);
+ EXPECT_EQ(pieceFound,X);
+}
+
+/**
  * @test      dropPieceSequenceXOXO
  * @requires  pieceAt() functionality
  * 
  * @desc      Tests dropPiece by attempting to drop an XOXO sequence into the
- *            same column. Result should be a full column, with X losing it's
- *            turn at the end, which results in it being O's turn.
+ *            same column. Result should be a full column, with O losing a turn
+ *            and X successfully taking next turn in a free column
  * 
- *            PASS: Column will be full, it is O's turn.
- *            FAIL: ? No idea what results will be haha
+ *            PASS: Column will be full, and X will play in a free column
+ *            FAIL: It won't return the correct piece
  * 
 **/
 
 TEST(PiezasTest, dropPieceSequenceXOXO)
 {
  Piezas game;
- Piece piece;
+ Piece pieceDropped;
  game.dropPiece(0);
  game.dropPiece(0);
- game.dropPiece(0);
- piece = game.dropPiece(0);
- EXPECT_EQ(piece,O);
- piece = game.dropPiece(0);
- EXPECT_EQ(piece,Blank);
- piece = game.dropPiece(1);
- EXPECT_EQ(piece,O);
+ pieceDropped = game.dropPiece(0);
+ EXPECT_EQ(pieceDropped,X); // this move should return X
+ pieceDropped = game.dropPiece(0);
+ EXPECT_EQ(pieceDropped,Blank); // should return Blank because column is full
+ pieceDropped = game.dropPiece(1); // drop into another column
+ EXPECT_EQ(pieceDropped,O); // because O attempted to drop into a full column,
+                            // and lost turn, this should return X
+ 
 }

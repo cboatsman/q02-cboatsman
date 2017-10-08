@@ -27,7 +27,7 @@ Piezas::Piezas()
 	turn = X; // set first turn to piece X
  // populate vectors with Blank pieces
 	for ( int row = 0; row < BOARD_ROWS; row++) {
-	 vector<Piece> *row_vector = new vector<Piece>;
+	 vector<Piece> * row_vector = new vector<Piece>;
 		for ( int col = 0; col < BOARD_COLS; col++ ) {
 			 row_vector->push_back(Blank);
 		}
@@ -46,11 +46,12 @@ void Piezas::reset()
 
 	for ( int row = 0; row < BOARD_ROWS; row++) {
 		for ( int col = 0; col < BOARD_COLS; col++ ) {
-			 board.at(row).pop_back;
+			 board.at(row).at(col) = Blank;
 		}
-		board.pop_back;
+	//	board.at(row).pop_back;
 	}
 
+/*
  // populate vectors with Blank pieces
 	for ( int row = 0; row < BOARD_ROWS; row++) {
 	 vector<Piece> *row_vector = new vector<Piece>;
@@ -60,6 +61,7 @@ void Piezas::reset()
 		board.push_back(*row_vector);
 		delete row_vector; // clean up
 	}
+	*/
 }
 
 /**
@@ -91,7 +93,7 @@ Piece Piezas::dropPiece(int column)
  if(column >= 0 && column < BOARD_COLS) {
   
   for(int row = 0; row < BOARD_ROWS; row++) {
-   Piece piece = board.pieceAt(row,column);
+   Piece piece = pieceAt(row,column);
    if(piece == Blank) {
     // there is a location in this column available
     board.at(row).at(column) = currentTurn;
