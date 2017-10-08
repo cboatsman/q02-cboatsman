@@ -29,7 +29,8 @@ TEST(PiezasTest, sanityCheck)
  * 
  * @desc      Initially assumes board is blank. Traverses board and returns
  *            each piece using the pieceAt() function. Tests that a new board
- *            is constructed properly.
+ *            is constructed properly. Additionally tests that pieceAt() is
+ *            properly returning Blank when no tile is present.
  * 
  *            PASS: ALL pieces returned equal Blank
  *            FAIL: At least one piece returned is NOT equal to Blank
@@ -58,7 +59,7 @@ TEST(PiezasTest, newBoardIsBlank)
 
 /**
  * @test      pieceAtOutOfBounds
- * @requires  N/A
+ * @requires  Piezas() constructor
  * 
  * @desc      Tests pieceAt(int,int) by attempting to access a location that
  *            is out of bounds from the game board which is defined to be
@@ -73,10 +74,10 @@ TEST(PiezasTest, pieceAtOutOfBounds)
 {
  Piezas game;
  Piece piece = Blank; // set piece initially to Blank
- try {
-  piece = game.pieceAt(5,5);
- }
- catch (const std::out_of_range& oor){
-  EXPECT_EQ(piece,Invalid);
- }
+ piece = game.pieceAt(5,5);
+ EXPECT_EQ(piece,Invalid);
+ piece = game.pieceAt(-1,-1);
+ EXPECT_EQ(piece,Invalid);
+ piece = game.pieceAt(4,2);
+ EXPECT_EQ(piece,Invalid);
 }
