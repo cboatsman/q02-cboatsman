@@ -69,13 +69,22 @@ Piece Piezas::dropPiece(int column)
 **/
 Piece Piezas::pieceAt(int row, int column)
 {
-	Piece *pieceFound = new Piece;
-	
-	*pieceFound = board.at(row).at(column);
-    
-	return *pieceFound;
-	
-	delete pieceFound;
+ // location is within bounds
+ if(
+      (row >= 0 && row < BOARD_ROWS)
+   && (column >= 0 && column < BOARD_COLS)
+   ) {
+  Piece pieceFound;
+  pieceFound = board.at(row).at(column);
+
+  if(pieceFound == Blank) {
+   return Blank; // location is blank
+  }
+  
+  return pieceFound; // location occupied
+ }
+ 
+ return Invalid; // location is out of bounds
 }
 
 /**
