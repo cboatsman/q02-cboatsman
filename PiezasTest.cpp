@@ -57,6 +57,7 @@ TEST(PiezasTest, newBoardIsBlank)
 	ASSERT_TRUE(boardIsBlank); // test is success if new board is blank
 }
 
+
 /**
  * @test      pieceAtOutOfBounds
  * @requires  Piezas() constructor
@@ -80,4 +81,32 @@ TEST(PiezasTest, pieceAtOutOfBounds)
  EXPECT_EQ(piece,Invalid);
  piece = game.pieceAt(4,2);
  EXPECT_EQ(piece,Invalid);
+}
+
+/**
+ * @test      dropPieceSequenceXOXO
+ * @requires  pieceAt() functionality
+ * 
+ * @desc      Tests dropPiece by attempting to drop an XOXO sequence into the
+ *            same column. Result should be a full column, with X losing it's
+ *            turn at the end, which results in it being O's turn.
+ * 
+ *            PASS: Column will be full, it is O's turn.
+ *            FAIL: ? No idea what results will be haha
+ * 
+**/
+
+TEST(PiezasTest, dropPieceSequenceXOXO)
+{
+ Piezas game;
+ Piece piece;
+ game.dropPiece(0);
+ game.dropPiece(0);
+ game.dropPiece(0);
+ piece = game.dropPiece(0);
+ EXPECT_EQ(piece,O);
+ piece = game.dropPiece(0);
+ EXPECT_EQ(piece,Blank);
+ piece = game.dropPiece(1);
+ EXPECT_EQ(piece,O);
 }
