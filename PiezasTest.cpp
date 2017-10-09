@@ -177,3 +177,84 @@ TEST(PiezasTest, resetBoard)
 	}
 	ASSERT_TRUE(boardIsBlank); // test is success if new board is blank
 }
+
+/**
+ * @test      gameStateNoWinnerTie
+ * @requires  Everything pretty much!
+ * 
+ * @desc      Tests the gameState() function.
+ *            Game is OVER when board is FILLED (no remaining blanks).
+ *            Should return which piece has won if there is a winner.
+ *            Return Blank if no one has won AND board is filled (tie).
+ *       
+ *            WINNER is most adjacent pieces in single line vertical/horizontal
+ * 
+ *            PASS: Column will be full, and X will play in a free column
+ *            FAIL: It won't return the correct piece
+ * 
+**/
+
+TEST(PiezasTest, gameStateNoWinnerTie)
+{
+ Piezas game;
+ 
+  for (int n=0; n<4; n++) {
+   for (int i=0; i<3; i++) {
+    game.dropPiece(n);
+   }
+  }
+  
+  Piece piece;
+  piece = game.gameState();
+  
+  EXPECT_EQ(piece,Blank);
+}
+
+TEST(PiezasTest, gameStateWinnerXByColumnof3)
+{
+ Piezas game;
+
+ game.dropPiece(1); // X
+ game.dropPiece(0); // O
+ game.dropPiece(1); // X
+ game.dropPiece(0); // O
+ game.dropPiece(1); // X
+ game.dropPiece(2); // O
+ game.dropPiece(2); // X
+ game.dropPiece(3); // O
+ game.dropPiece(0); // X
+ game.dropPiece(3); // O
+ game.dropPiece(3); // X
+ game.dropPiece(2); // O
+  
+ Piece piece;
+ piece = game.gameState();
+  
+ EXPECT_EQ(piece,X);
+}
+
+TEST(PiezasTest, gameStateWinnerXByRowof4)
+{
+ Piezas game;
+
+ game.dropPiece(0); // X
+ game.dropPiece(0); // O
+ game.dropPiece(1); // X
+ game.dropPiece(1); // O
+ game.dropPiece(2); // X
+ game.dropPiece(2); // O
+ game.dropPiece(3); // X
+ game.dropPiece(0); // O
+ game.dropPiece(1); // X
+ game.dropPiece(0); // O --
+ game.dropPiece(2); // X
+ game.dropPiece(0); // O --
+ game.dropPiece(3); // X
+ game.dropPiece(0); // O --
+ game.dropPiece(3); // X
+  
+ Piece piece;
+ piece = game.gameState();
+  
+ EXPECT_EQ(piece,X);
+}

@@ -145,5 +145,87 @@ Piece Piezas::pieceAt(int row, int column)
 **/
 Piece Piezas::gameState()
 {
-    return Blank;
+ 
+ Piece current, previous;
+ int highestX, highestO;
+ 
+ // traverse the board for Blank spaces
+ for (int i=0; i<BOARD_ROWS; i++) {
+  for (int j=0; j<BOARD_COLS; j++) {
+   current = pieceAt(i,j);
+   if(current == Blank)
+    return Invalid;
+  }
+ }
+ 
+ // first check col-by-col for X's and O's
+ for(int col=0; col<BOARD_COLS; col++) {
+  
+  previous = Blank;
+  int xCount = 0, oCount = 0;
+  
+  for(int row=0; row<BOARD_ROWS; row++) {
+   
+   current = pieceAt(row,col);
+   
+   if(previous != Blank) {
+     //this isn't the first run of the column
+     if( current == X && previous == X )
+      xCount++;
+     
+     if( current == O && previous == O )
+      oCount++;
+   }
+   
+   if ( xCount > highestX )
+    highestX = xCount;
+    
+   if ( oCount > highestO )
+    highestO = oCount;
+   
+   previous = current;
+  }
+  xCount = 0;
+  oCount = 0;
+ }
+
+ // then check row-by-row for X's and O's
+ for(int row=0; row<BOARD_ROWS; row++) {
+  
+  previous = Blank;
+  int xCount = 0, oCount = 0;
+  
+  for(int col=0; col<BOARD_COLS; col++) {
+   
+   current = pieceAt(row,col);
+   
+   if(previous != Blank) {
+     //this isn't the first run of the row
+     if( current == X && previous == X )
+      xCount++;
+     
+     if( current == O && previous == O )
+      oCount++;
+   }
+   
+   if ( xCount > highestX )
+    highestX = xCount;
+    
+   if ( oCount > highestO )
+    highestO = oCount;
+   
+   previous = current;
+
+  }
+  xCount = 0;
+  oCount = 0;
+ }
+ 
+ if(highestX == highestO) // tie
+  return Blank;
+  
+ if(highestX > highestO)
+  return X;
+ else
+  return O;
 }
