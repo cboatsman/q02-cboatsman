@@ -194,7 +194,7 @@ TEST(PiezasTest, resetBoard)
  * 
 **/
 
-TEST(PiezasTest, gameStateNoWinnerTie)
+TEST(PiezasTest, gameStateTiOne)
 {
  Piezas game;
  
@@ -210,9 +210,40 @@ TEST(PiezasTest, gameStateNoWinnerTie)
   EXPECT_EQ(piece,Blank);
 }
 
+TEST(PiezasTest, gameStateTieTwo)
+{
+ Piezas game;
+
+ game.dropPiece(0); // X
+ game.dropPiece(0); // O
+ game.dropPiece(0); // X
+ game.dropPiece(1); // O
+ game.dropPiece(1); // X
+ game.dropPiece(1); // O
+ game.dropPiece(2); // X
+ game.dropPiece(3); // O
+ game.dropPiece(2); // X
+ game.dropPiece(3); // O
+ game.dropPiece(3); // X
+ game.dropPiece(2); // O
+ 
+ Piece piece;
+ piece = game.gameState();
+  
+ EXPECT_EQ(piece,Blank);
+}
+
 TEST(PiezasTest, gameStateWinnerXByColumnof3)
 {
  Piezas game;
+
+ /**
+  *  X X O X
+  *  O X X O
+  *  O X O O
+  * 
+  *  DROP ORDER: 1 0 1 0 1 2 2 3 0 3 3 2
+***/
 
  game.dropPiece(1); // X
  game.dropPiece(0); // O
@@ -226,14 +257,14 @@ TEST(PiezasTest, gameStateWinnerXByColumnof3)
  game.dropPiece(3); // O
  game.dropPiece(3); // X
  game.dropPiece(2); // O
-  
+
  Piece piece;
  piece = game.gameState();
   
  EXPECT_EQ(piece,X);
 }
 
-TEST(PiezasTest, gameStateWinnerXByRowof4)
+TEST(PiezasTest, gameStateWinnerXByRowOf4)
 {
  Piezas game;
 
@@ -250,9 +281,41 @@ TEST(PiezasTest, gameStateWinnerXByRowof4)
  game.dropPiece(2); // X
  game.dropPiece(0); // O --
  game.dropPiece(3); // X
+ game.dropPiece(3); // O
+ 
+ Piece piece;
+ piece = game.gameState();
+  
+ EXPECT_EQ(piece,X);
+}
+
+TEST(PiezasTest, gameStateWinnerXByRowOf3)
+{
+ Piezas game;
+
+ /**
+  *  O X O X
+  *  O X X X
+  *  X O X O
+  *  note: -N- for column N is a loss turn to make the board come out as
+  *        needed for a test case
+  *  DROP ORDER: 0 1 2 0 2 0 1 3 1 2 3 -0- 3
+***/
+
+ game.dropPiece(0); // X
+ game.dropPiece(1); // O
+ game.dropPiece(2); // X
+ game.dropPiece(0); // O
+ game.dropPiece(2); // X
+ game.dropPiece(0); // O
+ game.dropPiece(1); // X
+ game.dropPiece(3); // O
+ game.dropPiece(1); // X
+ game.dropPiece(2); // O
+ game.dropPiece(3); // X
  game.dropPiece(0); // O --
  game.dropPiece(3); // X
-  
+ 
  Piece piece;
  piece = game.gameState();
   
