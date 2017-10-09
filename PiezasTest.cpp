@@ -125,12 +125,55 @@ TEST(PiezasTest, dropPieceSequenceXOXO)
  Piece pieceDropped;
  game.dropPiece(0);
  game.dropPiece(0);
- pieceDropped = game.dropPiece(0);
- EXPECT_EQ(pieceDropped,X); // this move should return X
- pieceDropped = game.dropPiece(0);
- EXPECT_EQ(pieceDropped,Blank); // should return Blank because column is full
- pieceDropped = game.dropPiece(1); // drop into another column
- EXPECT_EQ(pieceDropped,O); // because O attempted to drop into a full column,
+ pieceDropped = game.dropPiece(0); // X's move
+ EXPECT_EQ(pieceDropped,X);
+ pieceDropped = game.dropPiece(0); // O's move
+ EXPECT_EQ(pieceDropped,Blank); // return Blank because column is full
+ pieceDropped = game.dropPiece(1); // X's move, drop into another column
+ EXPECT_EQ(pieceDropped,X); // because O attempted to drop into a full column,
                             // and lost turn, this should return X
  
+}
+
+/**
+ * @test      reset() function
+ * @requires  dropPiece() functionality
+ * 
+ * @desc      Tests the reset() function to ensure that our board can properly
+ *            reset to blank spaces.
+ * 
+ *            PASS: Board will return blank
+ *            FAIL: Board will contain pieces dropped during test
+ * 
+**/
+
+TEST(PiezasTest, resetBoard)
+{
+ Piezas game;
+ Piece piece;
+ 
+ game.dropPiece(0);
+ game.dropPiece(0);
+ game.dropPiece(1);
+ game.dropPiece(2);
+ game.dropPiece(3);
+ game.dropPiece(2);
+ 
+ bool boardIsBlank = true; // assume board is blank
+
+ game.reset(); // call reset function
+ 
+ // test for blank board
+	for ( int row = 0; row < BOARD_ROWS; row++ ) {
+		for ( int col = 0; col < BOARD_COLS; col++ ) {
+			piece = game.pieceAt(row,col); // grab current piece
+			// setup EXPECT_EQ to see what piece may be if it's not blank
+			if ( piece != Blank ) {
+			 EXPECT_EQ(piece, Blank); // helpful message to see what piece is
+			 boardIsBlank = false;
+				break; // no point in continuing
+			}
+		}
+	}
+	ASSERT_TRUE(boardIsBlank); // test is success if new board is blank
 }

@@ -32,7 +32,7 @@ Piezas::Piezas()
 			 row_vector->push_back(Blank);
 		}
 		board.push_back(*row_vector);
-		delete row_vector; // clean up
+		delete row_vector;
 	}
 }
 
@@ -45,23 +45,18 @@ void Piezas::reset()
  turn = X; // reset the turn back to X
 
 	for ( int row = 0; row < BOARD_ROWS; row++) {
-		for ( int col = 0; col < BOARD_COLS; col++ ) {
-			 board.at(row).at(col) = Blank;
-		}
-	//	board.at(row).pop_back;
+	 board.erase(board.begin(),board.end());
 	}
-
-/*
- // populate vectors with Blank pieces
+	
+	 // populate vectors with Blank pieces
 	for ( int row = 0; row < BOARD_ROWS; row++) {
-	 vector<Piece> *row_vector = new vector<Piece>;
+	 vector<Piece> * row_vector = new vector<Piece>;
 		for ( int col = 0; col < BOARD_COLS; col++ ) {
 			 row_vector->push_back(Blank);
 		}
 		board.push_back(*row_vector);
-		delete row_vector; // clean up
+		delete row_vector;
 	}
-	*/
 }
 
 /**
@@ -75,7 +70,9 @@ void Piezas::reset()
 Piece Piezas::dropPiece(int column)
 {
  
- Piece currentTurn = turn; // save the current turn value
+ Piece * currentTurn = new Piece;
+ 
+ *currentTurn = turn; // save the current turn value
  
  // Toggle the Turn
  // NOTE: It appears that, regardless, this function will toggle the turn
@@ -93,18 +90,23 @@ Piece Piezas::dropPiece(int column)
  if(column >= 0 && column < BOARD_COLS) {
   
   for(int row = 0; row < BOARD_ROWS; row++) {
+   
    Piece piece = pieceAt(row,column);
+   
    if(piece == Blank) {
     // there is a location in this column available
-    board.at(row).at(column) = currentTurn;
-    return currentTurn; // piece drop was success
+    board.at(row).at(column) = *currentTurn;
+    return *currentTurn; // piece drop was success
    }
+   
   }
   
   return Blank; // column is full
  }
  
  return Invalid; // out of bounds
+ 
+ delete currentTurn;
 }
 
 /**
